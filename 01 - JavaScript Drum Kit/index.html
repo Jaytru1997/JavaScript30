@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Drum Kit</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+  <div class="keys">
+    <div data-key="65" other-key="97" class="key">
+      <kbd>A</kbd>
+      <span class="sound">clap</span>
+    </div>
+    <div data-key="83" other-key="115" class="key">
+      <kbd>S</kbd>
+      <span class="sound">hihat</span>
+    </div>
+    <div data-key="68" other-key="100" class="key">
+      <kbd>D</kbd>
+      <span class="sound">kick</span>
+    </div>
+    <div data-key="70" other-key="102" class="key">
+      <kbd>F</kbd>
+      <span class="sound">openhat</span>
+    </div>
+    <div data-key="71" other-key="103" class="key">
+      <kbd>G</kbd>
+      <span class="sound">boom</span>
+    </div>
+    <div data-key="72" other-key="104" class="key">
+      <kbd>H</kbd>
+      <span class="sound">ride</span>
+    </div>
+    <div data-key="74" other-key="106" class="key">
+      <kbd>J</kbd>
+      <span class="sound">snare</span>
+    </div>
+    <div data-key="75" other-key="107" class="key">
+      <kbd>K</kbd>
+      <span class="sound">tom</span>
+    </div>
+    <div data-key="76" other-key="108" class="key">
+      <kbd>L</kbd>
+      <span class="sound">tink</span>
+    </div>
+  </div>
+
+  <audio data-key="65" other-key="97" src="sounds/clap.wav"></audio>
+  <audio data-key="83" other-key="115" src="sounds/hihat.wav"></audio>
+  <audio data-key="68" other-key="100" src="sounds/kick.wav"></audio>
+  <audio data-key="70" other-key="102" src="sounds/openhat.wav"></audio>
+  <audio data-key="71" other-key="103" src="sounds/boom.wav"></audio>
+  <audio data-key="72" other-key="104" src="sounds/ride.wav"></audio>
+  <audio data-key="74" other-key="106" src="sounds/snare.wav"></audio>
+  <audio data-key="75" other-key="107" src="sounds/tom.wav"></audio>
+  <audio data-key="76" other-key="108" src="sounds/tink.wav"></audio>
+
+<script>
+  const playSound = (e) => {
+    const keycode = e.keyCode;//grab keyCode from keyboard
+    const key = document.querySelector(`div[data-key="${keycode}"]`);
+    const otherKey = document.querySelector(`div[other-key="${keycode}"]`);
+    const audio = document.querySelector(`audio[data-key="${keycode}"]`);
+    const otherAudio = document.querySelector(`audio[other-key="${keycode}"]`);
+    const propertyName = e.propertyName;
+    if (!audio) return;
+    if (key === audio  || otherKey === otherAudio){
+      audio.currentTime = 0;
+      audio.play();
+    }
+    if (propertyName !== 'transform') {
+      key.classList.add('playing');
+    }
+  };
+  function removeTransition(e) {
+    if (e.propertyName !== 'transform') return;
+    e.target.classList.remove('playing');
+  }
+  const keys = Array.from(document.querySelectorAll('.key'));
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+  window.addEventListener('keydown', playSound);
+
+  /*
+  keyCode
+  a=97  A=65
+  s=115 S=83
+  d=100 D=68
+  f=102 F=70
+  g=103 G=71
+  h=104 H=72
+  j=106 J=74
+  k=107 K=75
+  l=108 L=76
+  */
+</script>
+</body>
+</html>
